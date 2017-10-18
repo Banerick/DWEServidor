@@ -4,7 +4,7 @@ $frase1 = 'Este texto contiene una buena cantidad de letras';
 function primeraA($frase) { return strpos($frase, 'a'); }
 function primeraM($frase) { return strpos($frase, 'm'); }
 function primeraCantidad($frase) { return strpos($frase, 'cantidad'); }
-function ultimaE($frase) { return strrpos($frase, 'e', -1); }
+function ultimaE($frase) { return strpos($frase, 'e', -1); }
 function fraseDesdeTexto($frase) { return substr($frase, strrpos($frase, 'texto')); }
 function fraseDesde15($frase) { return substr($frase, 15); }
 function fraseDesde18y6($frase) { return substr($frase, 18, 6); }
