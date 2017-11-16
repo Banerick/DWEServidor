@@ -35,6 +35,8 @@ function ata_ic_initialize_divi_modules()
                 'alt',
                 'title_text',
                 'ic_style',
+                'ic_title',
+                'ic_text',
                 'show_in_lightbox',
                 'url',
                 'url_new_window',
@@ -52,6 +54,7 @@ function ata_ic_initialize_divi_modules()
             );
 
             $this->fields_defaults = array(
+                'ic_style' => array('lily'),
                 'show_in_lightbox' => array('off'),
                 'url_new_window' => array('off'),
                 'show_bottom_space' => array('on'),
@@ -151,7 +154,7 @@ function ata_ic_initialize_divi_modules()
                     'toggle_slug' => 'attributes',
                 ),
                 'ic_style' => array(
-                    'label' => esc_html__('Style', 'ata_ic'),
+                    'label' => esc_html__('Caption Style', 'ata_ic'),
                     'type' => 'select',
                     'option_category' => 'basic_option',
                     'options' => array(
@@ -180,7 +183,21 @@ function ata_ic_initialize_divi_modules()
                         'duke' => esc_html__('Duke', 'ata_ic'),
 
                     ),
-                    'description' => esc_html__('Here you can choose the design that you want to use to display the testimonial.', 'ata_ic'),
+                    'description' => esc_html__('Here you can choose the design that you want to use to display the image.', 'ata_ic'),
+                    'toggle_slug' => 'main_content',
+                ),
+                'ic_title' => array(
+                    'label' => esc_html__('Caption Title', 'ata_ic'),
+                    'type' => 'text',
+                    'option_category' => 'basic_option',
+                    'description' => esc_html__('This defines the Caption Title.', 'ata_ic'),
+                    'toggle_slug' => 'main_content',
+                ),
+                'ic_text' => array(
+                    'label' => esc_html__('Caption Description', 'ata_ic'),
+                    'type' => 'text',
+                    'option_category' => 'basic_option',
+                    'description' => esc_html__('This defines the Caption Description.', 'ata_ic'),
                     'toggle_slug' => 'main_content',
                 ),
                 'show_in_lightbox' => array(
@@ -365,6 +382,8 @@ function ata_ic_initialize_divi_modules()
             $alt = $this->shortcode_atts['alt'];
             $title_text = $this->shortcode_atts['title_text'];
             $ic_style = $this->shortcode_atts['ic_style'];
+            $ic_title = $this->shortcode_atts['ic_title'];
+            $ic_text = $this->shortcode_atts['ic_text'];
             $url = $this->shortcode_atts['url'];
             $url_new_window = $this->shortcode_atts['url_new_window'];
             $show_in_lightbox = $this->shortcode_atts['show_in_lightbox'];
@@ -468,28 +487,32 @@ function ata_ic_initialize_divi_modules()
                 ));
             }
 
-            $output = sprintf(
-                '<img class="ata_ic_image" src="%1$s" alt="%2$s"%3$s />
-			%4$s',
-                esc_url($src),
-                esc_attr($alt),
-                ('' !== $title_text ? sprintf(' title="%1$s"', esc_attr($title_text)) : ''),
-                ''
-            );
-
             if ('on' === $show_in_lightbox) {
-                $output = sprintf('<a href="%1$s" class="et_pb_lightbox_image" title="%3$s">%2$s</a>',
+                $output = sprintf('<a href="%1$s" class="et_pb_lightbox_image" title="%2$s">View more</a>',
                     esc_url($src),
-                    $output,
-                    esc_attr($alt)
+                    esc_attr($ic_title)
                 );
             } else if ('' !== $url) {
-                $output = sprintf('<a href="%1$s"%3$s>%2$s</a>',
+                $output = sprintf('<a href="%1$s"%3$s>View more</a>',
                     esc_url($url),
-                    $output,
                     ('on' === $url_new_window ? ' target="_blank"' : '')
                 );
             }
+
+            $output = sprintf(
+                '<img class="ata_ic_image" src="%1$s" alt="%2$s"%3$s />
+                        <figcaption>
+							<div class="ic_title">%4$s</div>
+							<p>%5$s</p>
+							%6$s
+						</figcaption>',
+                esc_url($src),
+                esc_attr($alt),
+                ('' !== $title_text ? sprintf(' title="%1$s"', esc_attr($title_text)) : ''),
+                esc_attr($ic_title),
+                esc_attr($ic_text),
+                $output
+            );
 
             $output = sprintf(
                 '<div%5$s class="et_pb_module ata_ic_image%2$s%3$s%4$s%6$s%9$s">
@@ -505,7 +528,7 @@ function ata_ic_initialize_divi_modules()
                 ('on' !== $show_bottom_space ? esc_attr(' ata_ic_image_sticky') : ''),
                 ('' !== $module_id ? sprintf(' id="%1$s"', esc_attr($module_id)) : ''),
                 'on' === $is_overlay_applied ? ' et_pb_has_overlay' : '',
-                ' ' . $ic_style,
+                $ic_style,
                 ' class2',
                 ' class3',
                 ' class4'
