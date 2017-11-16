@@ -39,6 +39,7 @@ function ata_ic_initialize_divi_modules()
                 'ic_text',
                 'show_in_lightbox',
                 'url',
+                'button_text',
                 'url_new_window',
                 'show_bottom_space',
                 'align',
@@ -56,6 +57,7 @@ function ata_ic_initialize_divi_modules()
             $this->fields_defaults = array(
                 'ic_style' => array('lily'),
                 'show_in_lightbox' => array('off'),
+                'button_text' => esc_html__('View more', 'ata_ic'),
                 'url_new_window' => array('off'),
                 'show_bottom_space' => array('on'),
                 'align' => array('left'),
@@ -226,6 +228,13 @@ function ata_ic_initialize_divi_modules()
                     'description' => esc_html__('If you would like your image to be a link, input your destination URL here. No link will be created if this field is left blank.', 'et_builder'),
                     'toggle_slug' => 'link',
                 ),
+                'button_text' => array(
+                    'label' => esc_html__('Button Text', 'et_builder'),
+                    'type' => 'text',
+                    'option_category' => 'basic_option',
+                    'description' => esc_html__('Input your desired button text, or leave blank for no button.', 'et_builder'),
+                    'toggle_slug' => 'link',
+                ),
                 'url_new_window' => array(
                     'label' => esc_html__('Url Opens', 'et_builder'),
                     'type' => 'select',
@@ -385,6 +394,7 @@ function ata_ic_initialize_divi_modules()
             $ic_title = $this->shortcode_atts['ic_title'];
             $ic_text = $this->shortcode_atts['ic_text'];
             $url = $this->shortcode_atts['url'];
+            $button_text = $this->shortcode_atts['button_text'];
             $url_new_window = $this->shortcode_atts['url_new_window'];
             $show_in_lightbox = $this->shortcode_atts['show_in_lightbox'];
             $show_bottom_space = $this->shortcode_atts['show_bottom_space'];
@@ -487,15 +497,18 @@ function ata_ic_initialize_divi_modules()
                 ));
             }
 
+            $output = '';
             if ('on' === $show_in_lightbox) {
-                $output = sprintf('<a href="%1$s" class="et_pb_lightbox_image" title="%2$s">View more</a>',
+                $output = sprintf('<a href="%1$s" class="et_pb_lightbox_image" title="%2$s">%3$s</a>',
                     esc_url($src),
+                    esc_attr($ic_title),
                     esc_attr($ic_title)
                 );
             } else if ('' !== $url) {
-                $output = sprintf('<a href="%1$s"%3$s>View more</a>',
+                $output = sprintf('<a href="%1$s"%2$s>%3$s</a>',
                     esc_url($url),
-                    ('on' === $url_new_window ? ' target="_blank"' : '')
+                    ('on' === $url_new_window ? ' target="_blank"' : ''),
+                    esc_attr($button_text)
                 );
             }
 
@@ -509,18 +522,16 @@ function ata_ic_initialize_divi_modules()
                 esc_url($src),
                 esc_attr($alt),
                 ('' !== $title_text ? sprintf(' title="%1$s"', esc_attr($title_text)) : ''),
-                esc_attr($ic_title),
-                esc_attr($ic_text),
+                $ic_title,
+                $ic_text,
                 $output
             );
 
             $output = sprintf(
-                '<div%5$s class="et_pb_module ata_ic_image%2$s%3$s%4$s%6$s%9$s">
+                '<div%5$s class="et_pb_module ata_ic_image%2$s%3$s%4$s%6$s">
                     <figure class="ata_ic effect-%7$s">
                         %1$s		
 					</figure>
-				%10$s
-				%8$s
 			</div>',
                 $output,
                 in_array($animation_style, array('', 'none')) ? '' : ' et-waypoint',
@@ -528,10 +539,7 @@ function ata_ic_initialize_divi_modules()
                 ('on' !== $show_bottom_space ? esc_attr(' ata_ic_image_sticky') : ''),
                 ('' !== $module_id ? sprintf(' id="%1$s"', esc_attr($module_id)) : ''),
                 'on' === $is_overlay_applied ? ' et_pb_has_overlay' : '',
-                $ic_style,
-                ' class2',
-                ' class3',
-                ' class4'
+                $ic_style
             );
 
             /*
