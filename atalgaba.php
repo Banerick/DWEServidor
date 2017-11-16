@@ -8,15 +8,19 @@
 add_action('wp_enqueue_scripts', 'callback_for_setting_up_scripts');
 add_action('admin_enqueue_scripts', 'callback_for_setting_up_scripts');
 
-function callback_for_setting_up_scripts() {
-    wp_register_style( 'ata_ic_style', plugins_url( 'css/hovereffects.css' , __FILE__ ) );
-    wp_enqueue_style( 'ata_ic_style' );
+function callback_for_setting_up_scripts()
+{
+    wp_register_style('ata_ic_style', plugins_url('css/hovereffects.css', __FILE__));
+    wp_enqueue_style('ata_ic_style');
 }
 
-add_action( 'et_builder_ready', 'ata_ic_initialize_divi_modules' );
+add_action('et_builder_ready', 'ata_ic_initialize_divi_modules');
 
-function ata_ic_initialize_divi_modules() {
-    if ( ! class_exists( 'ET_Builder_Module' ) ) { return; }
+function ata_ic_initialize_divi_modules()
+{
+    if (!class_exists('ET_Builder_Module')) {
+        return;
+    }
 
     class ATA_Builder_Module_Image_Caption extends ET_Builder_Module
     {
@@ -30,6 +34,7 @@ function ata_ic_initialize_divi_modules() {
                 'src',
                 'alt',
                 'title_text',
+                'ic_style',
                 'show_in_lightbox',
                 'url',
                 'url_new_window',
@@ -145,6 +150,39 @@ function ata_ic_initialize_divi_modules() {
                     'tab_slug' => 'custom_css',
                     'toggle_slug' => 'attributes',
                 ),
+                'ic_style' => array(
+                    'label' => esc_html__('Style', 'ata_ic'),
+                    'type' => 'select',
+                    'option_category' => 'basic_option',
+                    'options' => array(
+                        'lily' => esc_html__('Lily', 'ata_ic'),
+                        'sadie' => esc_html__('Sadie', 'ata_ic'),
+                        'roxy' => esc_html__('Roxy', 'ata_ic'),
+                        'bubba' => esc_html__('Bubba', 'ata_ic'),
+                        'romeo' => esc_html__('Romeo', 'ata_ic'),
+                        'layla' => esc_html__('Layla', 'ata_ic'),
+                        'honey' => esc_html__('Honey', 'ata_ic'),
+                        'oscar' => esc_html__('Oscar', 'ata_ic'),
+                        'marley' => esc_html__('Marley', 'ata_ic'),
+                        'ruby' => esc_html__('Ruby', 'ata_ic'),
+                        'milo' => esc_html__('Milo', 'ata_ic'),
+                        'dexter' => esc_html__('Dexter', 'ata_ic'),
+                        'sarah' => esc_html__('Sarah', 'ata_ic'),
+                        'zoe' => esc_html__('Zoe', 'ata_ic'),
+                        'chico' => esc_html__('Chico', 'ata_ic'),
+                        'julia' => esc_html__('Julia', 'ata_ic'),
+                        'goliath' => esc_html__('Goliath', 'ata_ic'),
+                        'steve' => esc_html__('Steve', 'ata_ic'),
+                        'moses' => esc_html__('Moses', 'ata_ic'),
+                        'jazz' => esc_html__('Jazz', 'ata_ic'),
+                        'ming' => esc_html__('Ming', 'ata_ic'),
+                        'lexi' => esc_html__('Lexi', 'ata_ic'),
+                        'duke' => esc_html__('Duke', 'ata_ic'),
+
+                    ),
+                    'description' => esc_html__('Here you can choose the design that you want to use to display the testimonial.', 'ata_ic'),
+                    'toggle_slug' => 'main_content',
+                ),
                 'show_in_lightbox' => array(
                     'label' => esc_html__('Open in Lightbox', 'et_builder'),
                     'type' => 'yes_no_button',
@@ -166,8 +204,7 @@ function ata_ic_initialize_divi_modules() {
                     'type' => 'text',
                     'option_category' => 'basic_option',
                     'depends_show_if' => 'off',
-                    'affects' => array(
-                        //'use_overlay',
+                    'affects' => array(//'use_overlay',
                     ),
                     'description' => esc_html__('If you would like your image to be a link, input your destination URL here. No link will be created if this field is left blank.', 'et_builder'),
                     'toggle_slug' => 'link',
@@ -327,6 +364,7 @@ function ata_ic_initialize_divi_modules() {
             $src = $this->shortcode_atts['src'];
             $alt = $this->shortcode_atts['alt'];
             $title_text = $this->shortcode_atts['title_text'];
+            $ic_style = $this->shortcode_atts['ic_style'];
             $url = $this->shortcode_atts['url'];
             $url_new_window = $this->shortcode_atts['url_new_window'];
             $show_in_lightbox = $this->shortcode_atts['show_in_lightbox'];
@@ -362,7 +400,7 @@ function ata_ic_initialize_divi_modules() {
                 ));
 
                 ET_Builder_Element::set_style($function_name, array(
-                    'selector' => '%%order_class%% .ata_ic_image_wrap, %%order_class%% img',
+                    'selector' => '%%order_class%% .ata_ic_image, %%order_class%% img',
                     'declaration' => 'width: 100%;',
                 ));
             }
@@ -425,13 +463,13 @@ function ata_ic_initialize_divi_modules() {
             // Set display block for svg image to avoid disappearing svg image
             if ($is_src_svg) {
                 ET_Builder_Element::set_style($function_name, array(
-                    'selector' => '%%order_class%% .ata_ic_image_wrap',
+                    'selector' => '%%order_class%% .ata_ic_image',
                     'declaration' => 'display: block;',
                 ));
             }
 
             $output = sprintf(
-                '<span class="ata_ic_image_wrap"><img src="%1$s" alt="%2$s"%3$s /></span>
+                '<img class="ata_ic_image" src="%1$s" alt="%2$s"%3$s />
 			%4$s',
                 esc_url($src),
                 esc_attr($alt),
@@ -454,10 +492,12 @@ function ata_ic_initialize_divi_modules() {
             }
 
             $output = sprintf(
-                '<div%5$s class="et_pb_module ata_ic_image%2$s%3$s%4$s%6$s%7$s%9$s">
+                '<div%5$s class="et_pb_module ata_ic_image%2$s%3$s%4$s%6$s%9$s">
+                    <figure class="ata_ic effect-%7$s">
+                        %1$s		
+					</figure>
 				%10$s
 				%8$s
-				%1$s
 			</div>',
                 $output,
                 in_array($animation_style, array('', 'none')) ? '' : ' et-waypoint',
@@ -465,11 +505,22 @@ function ata_ic_initialize_divi_modules() {
                 ('on' !== $show_bottom_space ? esc_attr(' ata_ic_image_sticky') : ''),
                 ('' !== $module_id ? sprintf(' id="%1$s"', esc_attr($module_id)) : ''),
                 'on' === $is_overlay_applied ? ' et_pb_has_overlay' : '',
-                'class 1',
-                'class 2',
-                'class 3',
-                'class 4'
+                ' ' . $ic_style,
+                ' class2',
+                ' class3',
+                ' class4'
             );
+
+            /*
+             * <figure class="effect-duke">
+						<img src="img/27.jpg" alt="img27"/>
+						<figcaption>
+							<h2>Messy <span>Duke</span></h2>
+							<p>Duke is very bored. When he looks at the sky, he feels to run.</p>
+							<a href="#">View more</a>
+						</figcaption>
+					</figure>
+             */
 
             return $output;
         }
@@ -479,7 +530,7 @@ function ata_ic_initialize_divi_modules() {
             $boxShadow = ET_Builder_Module_Fields_Factory::get('BoxShadow');
 
             self::set_style($function_name, $boxShadow->get_style(
-                sprintf('.%1$s .ata_ic_image_wrap', self::get_module_order_class($function_name)),
+                sprintf('.%1$s .ata_ic_image', self::get_module_order_class($function_name)),
                 $this->shortcode_atts
             ));
         }
@@ -490,8 +541,8 @@ function ata_ic_initialize_divi_modules() {
 
             $this->advanced_options["border"]['css'] = array(
                 'main' => array(
-                    'border_radii' => "%%order_class%% .ata_ic_image_wrap",
-                    'border_styles' => "%%order_class%% .ata_ic_image_wrap",
+                    'border_radii' => "%%order_class%% .ata_ic_image",
+                    'border_styles' => "%%order_class%% .ata_ic_image",
                 )
             );
 
