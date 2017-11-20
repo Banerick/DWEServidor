@@ -1,4 +1,5 @@
 <?php
+$string = '';
 if (isset($_POST['nombre']) && isset($_POST['mensaje'])) {
     $FILE = "datos.txt";
     $myfile = fopen($FILE, "a") or die("Unable to open file!");
