@@ -14,6 +14,7 @@ class DBConnection
         $host = self::HOST;
         $db = self::DB;
         $connection = new PDO("mysql:dbname=$db;host=$host", $username, $password);
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $connection;
     }
 
