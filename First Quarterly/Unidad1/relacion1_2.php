@@ -35,4 +35,20 @@ function dosPrimerasPalabras($frase)
 }
 
 // 5
-function
+function cuentaLetra($frase, $letra) {
+    return substr_count($frase, $letra);
+}
+
+//6
+function numeroBinOct($numero) {
+    printf("Dec: %i - Bin: %i - Oct: %i", array($numero, decbin($numero), decoct($numero)));
+}
+
+//7
+function repeatLetter($frase) {
+    $newFrase = '';
+    foreach(str_split($frase) as $letra) {
+        $newFrase .= $letra . $letra;
+    }
+    return $newFrase;
+}
