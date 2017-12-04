@@ -44,6 +44,7 @@ $comentarios = new ComentariosView();
     <style>
         #botonazo {
             margin-left: 200px;
+            margin-bottom: 35px;
         }
 
         #estudiantes,
@@ -70,6 +71,15 @@ $comentarios = new ComentariosView();
 
 <div class="bloque">
     <h1>Formulario de Comentarios</h1>
+    <?php
+    if (!empty($_SESSION['idEstudiante'])) {
+        echo '<div style="margin-bottom: 25px;">';
+        echo '<h2 style="margin-bottom: 3px;">Tus datos</h2>';
+        echo "Estudiante(${_SESSION['idEstudiante']}, ${_SESSION['nombre']}, ${_SESSION['apellidos']}, ${_SESSION['email']}, ${_SESSION['telefono']},
+        ${_SESSION['tutor']}, ${_SESSION['grupo']} ,${_SESSION['fecha']})";
+        echo '</div>';
+    }
+    ?>
     <form action="" method="post">
         <table>
             <tr>
@@ -87,7 +97,7 @@ $comentarios = new ComentariosView();
 
     <?php
     if (!empty($_SESSION['idComentario'])) {
-        echo "Comentario insertado: Comentario(${_SESSION['idComentario']}, ${_SESSION['idEstudiante']}, ${_SESSION['mensaje']},)";
+        echo "Comentario insertado: Comentario(${_SESSION['idComentario']}, ${_SESSION['idEstudiante']}, ${_SESSION['mensaje']})";
     }
     ?>
 
