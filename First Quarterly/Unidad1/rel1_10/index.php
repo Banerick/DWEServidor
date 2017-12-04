@@ -2,10 +2,10 @@
 
 class DBConnection
 {
-    const USERNAME = "root";
-    const PASSWORD = "";
-    const HOST = "localhost";
-    const DB = "instituto";
+    const USERNAME = "sql2208820";
+    const PASSWORD = "gM2*iM3*";
+    const HOST = "sql2.freemysqlhosting.net";
+    const DB = "sql2208820";
 
     private function getConnection()
     {
@@ -32,7 +32,7 @@ class DBConnection
     public function createTables()
     {
         $estudiante = "CREATE TABLE IF NOT EXISTS Estudiante (
-          id INT(11) NOT NULL AUTO_INCREMENT,
+          id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
           nombre VARCHAR(255),
           apellidos VARCHAR(255),
           email VARCHAR(255),
@@ -40,14 +40,14 @@ class DBConnection
           tutor VARCHAR(255),
           grupo VARCHAR(255),
           fechaInicio VARCHAR(255)
-        )";
+        );";
         $this->queryList($estudiante);
 
         $comentario = "CREATE TABLE IF NOT EXISTS Comentario (
-          id INT(11) NOT NULL AUTO_INCREMENT,
+          id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
           idEstudiante INT(11),
           mensaje VARCHAR(255)
-        )";
+        );";
         $this->queryList($comentario);
     }
 }
@@ -58,14 +58,14 @@ class DBConnection
 
 class Estudiante
 {
-    private $id;
-    private $nombre;
-    private $apellidos;
-    private $email;
-    private $telefono;
-    private $tutor;
-    private $grupo;
-    private $fechaInicio;
+    public $id;
+    public $nombre;
+    public $apellidos;
+    public $email;
+    public $telefono;
+    public $tutor;
+    public $grupo;
+    public $fechaInicio;
 
     public function __construct($id, $nombre, $apellidos, $email, $telefono, $tutor, $grupo, $fechaInicio)
     {
@@ -93,9 +93,9 @@ class Estudiante
 
 class Comentario
 {
-    private $id;
-    private $idEstudiante;
-    private $mensaje;
+    public $id;
+    public $idEstudiante;
+    public $mensaje;
 
     public function __construct($id = null, $idEstudiante, $mensaje)
     {
