@@ -11,7 +11,7 @@ class DBConnection
     const USERNAME = "root";
     const PASSWORD = "";
     const HOST = "localhost";
-    const DB = "ej10";
+    const DB = "tienda";
 
     private function getConnection()
     {

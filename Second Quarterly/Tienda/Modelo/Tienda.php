@@ -18,7 +18,7 @@ class Tienda
      * @param $tienda_nombre
      * @param $tienda_tlf
      */
-    public function __construct($tienda_cod, $tienda_nombre, $tienda_tlf)
+    public function __construct($tienda_cod = 00000, $tienda_nombre = 'Ejemplo', $tienda_tlf = '666555444')
     {
         $this->tienda_cod = $tienda_cod;
         $this->tienda_nombre = $tienda_nombre;
@@ -72,7 +72,6 @@ class Tienda
     {
         $this->tienda_tlf = $tienda_tlf;
     }
-
 
 
 }
