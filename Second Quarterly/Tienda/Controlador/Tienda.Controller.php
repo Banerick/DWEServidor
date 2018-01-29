@@ -1,13 +1,14 @@
 <?php
+require 'Tiendas.php';
 
 class TiendaController
 {
 
-    private $model;
+    private $controller;
 
     public function __CONSTRUCT()
     {
-        $this->model = new Tiendas();
+        $this->controller = new Tiendas();
     }
 
     public function Index()
@@ -17,12 +18,17 @@ class TiendaController
 
     }
 
+    public function getController() {
+        return $this->controller;
+    }
+
     public function Crud()
     {
+        require_once 'Modelo/Tienda.php';
         $tienda = new Tienda();
 
         if (isset($_REQUEST['codigo'])) {
-            $tienda = $this->model->tiendas[$_REQUEST['codigo']];
+            $tienda = $this->controller->tiendas[$_REQUEST['codigo']];
         }
 
         require_once 'Vista/header.php';
@@ -32,6 +38,7 @@ class TiendaController
 
     public function Guardar()
     {
+        require_once 'Modelo/Tienda.php';
         $tienda = new Tienda();
 
         $tienda->setTiendaCod($_REQUEST['tienda_cod']);
@@ -41,15 +48,15 @@ class TiendaController
 
 
         $tienda->getTiendaCod() > 0
-            ? $this->model->updateTienda($tienda)
-            : $this->model->addTienda($tienda);
+            ? $this->controller->updateTienda($tienda)
+            : $this->controller->addTienda($tienda);
 
         header('Location: index.php');
     }
 
     public function Eliminar()
     {
-        $this->model->delTienda($_REQUEST['id']);
+        $this->controller->delTienda($_REQUEST['id']);
         header('Location: index.php');
     }
 }

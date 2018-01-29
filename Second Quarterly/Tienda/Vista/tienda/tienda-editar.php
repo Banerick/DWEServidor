@@ -7,7 +7,7 @@
     <li class="active"><?php echo $tienda->getTiendaCod() != null ? $tienda->getTiendaNombre() : 'Nuevo Registro'; ?></li>
 </ol>
 
-<form id="frm-alumno" action="?c=cliente&amp;a=Guardar" method="post" enctype="multipart/form-data">
+<form id="frm-alumno" action="?c=tienda&amp;a=Guardar" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?php echo $tienda->getTiendaCod(); ?>"/>
     <div class="form-group">
         <label>Código</label>
