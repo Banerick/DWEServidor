@@ -5,10 +5,12 @@
  * Date: 25/01/2018
  * Time: 9:48
  */
+require 'DBConnection.php' ;
 
 class Tiendas
 {
-    const TABLENAME = 'tienda';
+
+    private $TABLENAME;
     private $dbcon;
     public $tiendas;
 
@@ -17,6 +19,7 @@ class Tiendas
      */
     public function __construct()
     {
+        $this->TABLENAME = 'tienda';
         $this->dbcon = new DBConnection();
         $this->tiendas = array();
         $this->loadTiendas();
@@ -24,7 +27,8 @@ class Tiendas
 
     private function loadTiendas()
     {
-        $query = 'SELECT * FROM ' . TABLENAME . ';';
+        require_once 'Modelo/Tienda.php';
+        $query = 'SELECT * FROM ' . $this->TABLENAME . ';';
         $stmt = $this->dbcon->queryList($query);
         $data = $stmt->fetchAll();
         foreach ($data as $tienda) {
@@ -35,19 +39,19 @@ class Tiendas
 
     public function addTienda($tienda)
     {
-        $query = 'INSERT INTO ' . TABLENAME . ' VALUES (:codigo, :nombre, :telefono);';
-        $params = array(':codigo' => $tienda->tienda_cod, ':nombre' => $tienda->tienda_nombre, ':telefono' => $tienda->tienda_tlf);
+        $query = 'INSERT INTO ' . $this->TABLENAME . ' VALUES (:codigo, :nombre, :telefono);';
+        $params = array(':codigo' => $tienda->getTiendaCod(), ':nombre' => $tienda->getTiendaNombre(), ':telefono' => $tienda->getTiendaTlf());
         $stmt = $this->dbcon->queryList($query, $params);
         if (!$stmt->errorCode() === '00000') {
-            $this->tiendas[$tienda->tienda_cod] = $tienda;
+            $this->tiendas[$tienda->getTiendaCod()] = $tienda;
         }
         $stmt->closeCursor();
     }
 
     public function delTienda($tienda_cod)
     {
-        $query = 'DELETE FROM ' . TABLENAME . ' WHERE tienda_cod = :codigo;';
-        $params = array(':codigo' => $$tienda_cod);
+        $query = 'DELETE FROM ' . $this->TABLENAME . ' WHERE tienda_cod = :codigo;';
+        $params = array(':codigo' => $tienda_cod);
         $stmt = $this->dbcon->queryList($query, $params);
         if (!$stmt->errorCode() === '00000') {
             unset($this->tiendas[$tienda_cod]);
@@ -57,11 +61,11 @@ class Tiendas
 
     public function updateTienda($tienda)
     {
-        $query = 'UPDATE ' . TABLENAME . ' SET tienda_nombre = :nombre, tienda_tlf = :telefono WHERE tienda_cod = :codigo;';
-        $params = array(':codigo' => $tienda->tienda_cod, ':nombre' => $tienda->tienda_nombre, ':telefono' => $tienda->tienda_tlf);
+        $query = 'UPDATE ' . $this->TABLENAME . ' SET tienda_nombre = :nombre, tienda_tlf = :telefono WHERE tienda_cod = :codigo;';
+        $params = array(':codigo' => $tienda->getTiendaCod(), ':nombre' => $tienda->getTiendaNombre(), ':telefono' => $tienda->getTiendaTlf());
         $stmt = $this->dbcon->queryList($query, $params);
         if (!$stmt->errorCode() === '00000') {
-            $this->tiendas[$tienda->tienda_cod] = $tienda;
+            $this->tiendas[$tienda->getTiendaCod()] = $tienda;
         }
         $stmt->closeCursor();
     }
